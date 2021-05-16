@@ -37,3 +37,43 @@ def test_with_custom_mark1() -> None:
 def test_with_custom_mark2() -> None:
     assert 2 == 2
 
+class Company:
+    def __init__(self, name: str, stock_symbol: str):
+        self.name = name
+        self.stock_symbol = stock_symbol
+
+    def __str__(self):
+        return f"{self.name}:{self.stock_symbol}"
+
+
+# use function as fixture
+
+@pytest.fixture
+def company() -> Company:
+    return Company(name="Fiver", stock_symbol="FVRR")
+
+# pytest file_to_test -v -p no:warnings -s
+# -s flag is for print statements
+
+def test_with_fixture(company: Company) -> None:
+    print(f"Printing {company} from fixture")
+
+# pytest parametrize
+
+@pytest.mark.parametrize(
+    "company_name",
+    ["TickTok", "Instagram", "Twitch"],
+    ids=["TickTok test", "Instagram test", "Twitch test"]
+)
+def test_parametrized(company_name: str) -> None:
+    print(f"\nTest with {company_name}")
+
+#pytest.raises
+
+def raise_covid19_exception() -> None:
+    raise ValueError("CoronaVirus Exception")
+
+def test_raise_covid19_exception_should_pass() -> None:
+    with pytest.raises(ValueError) as e:
+        raise_covid19_exception()
+    assert "CoronaVirus Exception" == str(e.value)
