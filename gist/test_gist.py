@@ -77,3 +77,14 @@ def test_raise_covid19_exception_should_pass() -> None:
     with pytest.raises(ValueError) as e:
         raise_covid19_exception()
     assert "CoronaVirus Exception" == str(e.value)
+
+# show the durations
+# tag --durations=0
+
+
+# pytest file.py -k "sth"
+# 위와같이 -k 플래그는 function name에 "sth"이 들어간 것만 테스트 한다
+
+# pytest file.py -k "sth and not nth"
+# 위와 같은 경우는 sth은 포함하지만 nth은 포함하지 않는다.
+
