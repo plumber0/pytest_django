@@ -78,6 +78,41 @@ def test_raise_covid19_exception_should_pass() -> None:
         raise_covid19_exception()
     assert "CoronaVirus Exception" == str(e.value)
 
+# assert Exception
+
+def raise_covid19_exception() -> None:
+    raise ValueError("CoronaVirus Exception")
+
+def test_raise_covid19_exception_should_pass() -> None:
+    with pytest.raises(ValueError) as e:
+        """context manager 안에서 ValueError 가 raise 되는지 확인한다."""
+        raise_covid19_exception()
+    assert "CoronaVirus Exception" == str(e.value)
+
+
+# assert Log
+import logging
+logger = logging.getLogger("CORONA_LOGS")
+
+def function_that_logs_something() -> None:
+    try:
+        raise ValueError("CoronaVirus Exception")
+    except ValueError as e:
+        logger.warning(f"I am logging {str(e)}")
+
+# caplog is capture feature
+def test_logged_warning_level(caplog) -> None:
+    # 기본적으로 warning level 또는 above만 확인한다.
+    function_that_logs_something()
+    assert "I am logging CoronaVirus Exception" in caplog.text
+
+def test_logged_info_level(caplog) -> None:
+    # warning level 아래단계도 체크하고싶으면, context manager를 사용
+    with caplog.at_level(logging.INFO):
+        logger.info("I am logging info level")
+        assert "I am logging info level" in caplog.text
+
+
 # show the durations
 # tag --durations=0
 
